@@ -2,20 +2,20 @@ const moment = require('moment');
 
 const fmtDate = date => date ? moment(date).format('DD.MM.YYYY') : '';
 
+const percent = (from, due, stop) => Math.round(100 * (due-stop)/(due-from));
+
 const diff = (from, due, stop) => {
   if (!from || !due || !stop) return '';
 
-  return `${Math.round(100 * (due-stop)/(due-from))}%`;
+  return `${percent(from, due, stop)}%`;
 };
-
-// const line = ({name, from, due, stop}) => (due-stop);
 
 const line = ({name, from, due, stop}) => `
 <tr>
   <td class="name">${name}</td>
   <td class="from">${fmtDate(from)}</td>
   <td class="due">${fmtDate(due)}</td>
-  <td class="percent">${diff(from, due, stop)}</td>
+  <td class="percent ${percent(from, due, stop) < 50 ? 'expiring' : ''}">${diff(from, due, stop)}</td>
 </tr>
 `;
 
@@ -29,6 +29,7 @@ const page = (data, stop) => `
     td {padding-left: 1em;font-size:125%}
     .from, .due, .percent {white-space: nowrap}
     .name {width: 100%}
+    .expiring {background-color: #FFC7CE !important}
   </style>
 </head>
 <body>
