@@ -26,7 +26,7 @@ const page = (data, stop) => `
     body {font-family: sans-serif}
     table {width: 100%; border-spacing: 0;}
     tr:nth-child(odd) {background-color: #cccccc}
-    td {padding: 0.5ex}
+    td {padding-left: 1em;font-size:125%}
     .from, .due, .percent {white-space: nowrap}
     .name {width: 100%}
   </style>
