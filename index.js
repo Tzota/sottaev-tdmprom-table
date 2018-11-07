@@ -18,7 +18,7 @@ const records = parse(
             parts = value.split('.');
 
             if (parts.length === 3) {
-                return new Date(parts[2], parts[1] - 1, parts[0]);
+                return new Date(+parts[2] + (parts[2] < 2000 ? 2000 : 0) , parts[1] - 1, parts[0]);
             }
 
             return '';
