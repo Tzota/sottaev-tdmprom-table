@@ -2,6 +2,20 @@ const parse = require('csv-parse/lib/sync');
 const fs = require('fs');
 const {page} = require('./utils');
 
+const parseDate = value => {
+    let parts = value.split('/');
+    if (parts.length === 3) {
+        return new Date(parts[2], parts[0] - 1, parts[1]);
+    }
+    parts = value.split('.');
+
+    if (parts.length === 3) {
+        return new Date(+parts[2] + (parts[2] < 2000 ? 2000 : 0) , parts[1] - 1, parts[0]);
+    }
+
+    return '';
+};
+
 const records = parse(
     fs.readFileSync('./input.csv', 'utf-8'),
     {
@@ -11,23 +25,13 @@ const records = parse(
         cast: (value, {column}) => {
             if (!['from', 'due'].includes(column)) return value;
 
-            let parts = value.split('/');
-            if (parts.length === 3) {
-                return new Date(parts[2], parts[0] - 1, parts[1]);
-            }
-            parts = value.split('.');
-
-            if (parts.length === 3) {
-                return new Date(+parts[2] + (parts[2] < 2000 ? 2000 : 0) , parts[1] - 1, parts[0]);
-            }
-
-            return '';
+            return parseDate(value);
         },
     },
 );
 
 const [headers, ...data] = records;
-const stop = new Date(headers._);
+const stop = parseDate(headers._);
 const result = page(data, stop);
 
 try {
