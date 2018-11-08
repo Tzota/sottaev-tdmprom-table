@@ -19,7 +19,7 @@ const parseDate = value => {
 const records = parse(
     fs.readFileSync('./input.csv', 'utf-8'),
     {
-        columns: ['name', 'from', 'due', '_', '_2', '_3', '_4', '_5', '_6'],
+        columns: ['name', 'from', 'due', '_', '_2', '_3', '_4', '_5'],
         // delimiter: ';',
         skip_empty_lines: true,
         cast: (value, {column}) => {
