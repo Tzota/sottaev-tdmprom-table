@@ -22,6 +22,7 @@ const line = ({name, from, due, stop}) => `
 const page = (data, stop) => `
 <html>
 <head>
+  <meta charset="utf-8"/>
   <style>
     body {font-family: sans-serif}
     table {width: 100%; border-spacing: 0;}
