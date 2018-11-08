@@ -10,12 +10,13 @@ const diff = (from, due, stop) => {
   return `${percent(from, due, stop)}%`;
 };
 
-const line = ({name, from, due, stop}) => `
+const line = ({name, from, due, stop, info}) => `
 <tr>
   <td class="name">${name}</td>
   <td class="from">${fmtDate(from)}</td>
   <td class="due">${fmtDate(due)}</td>
   <td class="percent ${percent(from, due, stop) < 50 ? 'expiring' : ''}">${diff(from, due, stop)}</td>
+  <td class="info">${info}</td>
 </tr>
 `;
 
@@ -28,18 +29,18 @@ const page = (data, stop) => `
     table {width: 100%; border-spacing: 0;}
     tr:nth-child(odd) {background-color: #cccccc}
     td {padding-left: 1em;font-size:125%}
-    .from, .due, .percent {white-space: nowrap}
+    .from, .due, .percent, .info {white-space: nowrap}
     .name {width: 100%}
     .expiring {background-color: #FFC7CE !important}
   </style>
 </head>
 <body>
 <h1>Сроки склад ${fmtDate(stop)}</h1>
-${data.reduce((acc, {name, from, due}) => {
+${data.reduce((acc, {name, from, due, info}) => {
   if (from === '' && due === '') {
     acc.push([name, []]);
   } else {
-    (acc[acc.length - 1][1]).push({name, from, due, stop})
+    (acc[acc.length - 1][1]).push({name, from, due, stop, info})
   }
   return acc;
 }, [])
