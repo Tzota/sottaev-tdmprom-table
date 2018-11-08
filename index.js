@@ -1,5 +1,6 @@
 const parse = require('csv-parse/lib/sync');
 const fs = require('fs');
+const http = require('http');
 const {page} = require('./utils');
 
 const parseDate = value => {
@@ -41,3 +42,22 @@ try {
 }
 
 fs.writeFileSync('./build/index.html', result, 'utf-8');
+
+const options = {
+    hostname: 'www.daniyal.ru',
+    port: 80,
+    path: '/irbis/sroki/dump.php',
+    method: 'POST',
+    headers: {
+      'Content-Length': Buffer.byteLength(result)
+    }
+  };
+
+const req = http.request(options, () => {});
+
+req.on('error', (e) => {
+    console.error(`problem with request: ${e.message}`);
+});
+
+req.write(result);
+req.end();
