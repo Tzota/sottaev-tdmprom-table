@@ -47,6 +47,12 @@ ${data.reduce((acc, {name, from, due, info}) => {
   .map(([name, lines]) => `<h2>${name}</h2><table>${lines.map(line).join('')}</table>`)
   .join('')
 }
+<!-- Yandex.Metrika informer -->
+<a href="https://metrika.yandex.ru/stat/?id=51103667&amp;from=informer"
+target="_blank" rel="nofollow"><img src="https://informer.yandex.ru/informer/51103667/3_1_FFFFFFFF_EFEFEFFF_0_pageviews"
+style="width:88px; height:31px; border:0;" alt="Яндекс.Метрика" title="Яндекс.Метрика: данные за сегодня (просмотры, визиты и уникальные посетители)" class="ym-advanced-informer" data-cid="51103667" data-lang="ru" /></a>
+<!-- /Yandex.Metrika informer -->
+
 <!-- Yandex.Metrika counter -->
 <script type="text/javascript" >
     (function (d, w, c) {
