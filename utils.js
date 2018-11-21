@@ -2,20 +2,19 @@ const moment = require('moment');
 
 const fmtDate = date => date ? moment(date).format('DD.MM.YYYY') : '';
 
-const percent = (from, due, stop) => Math.round(100 * (due-stop)/(due-from));
+const withPercent = ({from, due, ...rest}, stop) => ({
+  from,
+  due,
+  ...rest,
+  percent: (!from || !due || !stop) ? 0 : Math.round(100 * (due-stop)/(due-from)),
+});
 
-const diff = (from, due, stop) => {
-  if (!from || !due || !stop) return '';
-
-  return `${percent(from, due, stop)}%`;
-};
-
-const line = ({name, from, due, stop, info}) => `
+const line = ({name, from, due, percent, info}) => `
 <tr>
   <td class="name">${name}</td>
   <td class="from">${fmtDate(from)}</td>
   <td class="due">${fmtDate(due)}</td>
-  <td class="percent ${percent(from, due, stop) < 50 ? 'expiring' : ''}">${diff(from, due, stop)}</td>
+  <td class="percent ${percent < 50 ? 'expiring' : ''}">${percent}${percent > 0 ? '%' : ''}</td>
   <td class="info">${info}</td>
 </tr>
 `;
@@ -44,7 +43,11 @@ ${data.reduce((acc, {name, from, due, info}) => {
   }
   return acc;
 }, [])
-  .map(([name, lines]) => `<h2>${name}</h2><table>${lines.map(line).join('')}</table>`)
+  .map(([name, lines]) => `<h2>${name}</h2><table>${lines
+    .map(o => withPercent(o, stop))
+    .sort((x, y) => x.percent - y.percent)
+    .map(line)
+    .join('')}</table>`)
   .join('')
 }
 <!-- Yandex.Metrika informer -->
