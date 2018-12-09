@@ -14,7 +14,7 @@ const line = ({name, from, due, percent, info}) => `
   <td class="name">${name}</td>
   <td class="from">${fmtDate(from)}</td>
   <td class="due">${fmtDate(due)}</td>
-  <td class="percent ${percent < 50 ? 'expiring' : ''}">${percent}${percent > 0 ? '%' : ''}</td>
+  <td class="percent ${percent < 50 ? 'expiring' : ''}">${percent}%</td>
   <td class="info">${info}</td>
 </tr>
 `;
@@ -35,7 +35,9 @@ const page = (data, stop) => `
 </head>
 <body>
 <h1>Сроки склад ${fmtDate(stop)}</h1>
-${data.reduce((acc, {name, from, due, info}) => {
+${data
+    .filter(({hidden}) => !hidden.trim())
+    .reduce((acc, {name, from, due, info}) => {
   if (from === '' && due === '') {
     acc.push([name, []]);
   } else {
